@@ -17,6 +17,21 @@ class Todo {
     });
   }
 
+  _addDatesEl() {
+    this._dueDate = new Date(this._data.date);
+    this._todoDate = this._todoElement.querySelector(".todo__date");
+    if (!isNaN(this._dueDate)) {
+      this._todoDate.textContent = `Due: ${this._dueDate.toLocaleString(
+        "en-US",
+        {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }
+      )}`;
+    }
+  }
+
   _generateCheckboxEl() {
     this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
     this._todoLabel = this._todoElement.querySelector(".todo__label");
@@ -38,6 +53,7 @@ class Todo {
 
     this._generateCheckboxEl();
     this._setEventListeners();
+    this._addDatesEl();
 
     return this._todoElement;
   }
