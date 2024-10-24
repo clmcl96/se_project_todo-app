@@ -1,17 +1,17 @@
 # Simple Todo App
 
-Give a brief description of the project here. Feel free to give it a different name.
+This project is meant to act as a to do list.
 
 ## Functionality
 
-Give a more detailed explanation of the project and its functionality.
+This to do list allows you to create new items, check them off, delete them, and add due dates to the tasks.
 
 ## Technology
 
-Give a description of the technologies and techniques used. Pictures, GIFs, or screenshots that detail the project features are recommended.
+HTML, CSS, and Javascript is used in this project.
 
 ## Deployment
 
 This project is deployed on GitHub Pages:
 
-- ADD LINK HERE
+https://clmcl96.github.io/se_project_todo-app/
