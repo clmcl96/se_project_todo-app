@@ -7,21 +7,21 @@ class FormValidator {
     this._formEl = formEl;
   }
 
-  _showInputError = (inputElement) => {
+  _showInputError(inputElement) {
     const errorElementId = `#${inputElement.id}-error`;
-    const errorElement = this._formElement.querySelector(errorElementId);
-    inputElement.classList.add(settings.inputErrorClass);
+    const errorElement = this._formEl.querySelector(errorElementId);
+    inputElement.classList.add(this._inputErrorClass);
     errorElement.textContent = inputElement.validationMessage;
-    errorElement.classList.add(settings.errorClass);
-  };
+    errorElement.classList.add(this._errorClass);
+  }
 
-  _hideInputError = (inputElement) => {
+  _hideInputError(inputElement) {
     const errorElementId = `#${inputElement.id}-error`;
     const errorElement = this._formEl.querySelector(errorElementId);
     inputElement.classList.remove(this._inputErrorClass);
     errorElement.classList.remove(this._errorClass);
     errorElement.textContent = "";
-  };
+  }
 
   _checkInputValidity(inputElement) {
     if (!inputElement.validity.valid) {
