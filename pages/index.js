@@ -1,69 +1,36 @@
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
-
+import Section from "../components/Section.js";
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
+import PopupWithForm from "../components/PopupWithForm.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
-const addTodoPopup = document.querySelector("#add-todo-popup");
-const addTodoForm = addTodoPopup.querySelector(".popup__form");
-const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
-//const todoTemplate = document.querySelector("#todo-template");  ----- REMOVE**
+const addTodoPopupEl = document.querySelector("#add-todo-popup");
+const addTodoForm = addTodoPopupEl.querySelector(".popup__form");
+const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
+
 const todosList = document.querySelector(".todos__list");
 
-const openModal = (modal) => {
-  modal.classList.add("popup_visible");
-};
+const addTodoPopup = new PopupWithForm({
+  popupSelector: "#add-todo-popup",
+  handleFormSubmit: () => {},
+});
+addTodoPopup.setEventListeners();
 
 const closeModal = (modal) => {
   modal.classList.remove("popup_visible");
 };
 
-// The logic in this function should all be handled in the Todo class.
 const generateTodo = (data) => {
   const todo = new Todo(data, "#todo-template");
   const todoElement = todo.getView();
-  /* const todoElement = todoTemplate.content
-    .querySelector(".todo")
-    .cloneNode(true);
-  const todoNameEl = todoElement.querySelector(".todo__name");
-  const todoCheckboxEl = todoElement.querySelector(".todo__completed");
-  const todoLabel = todoElement.querySelector(".todo__label");
-  const todoDate = todoElement.querySelector(".todo__date");
-  const todoDeleteBtn = todoElement.querySelector(".todo__delete-btn");
 
-  todoNameEl.textContent = data.name;
-  todoCheckboxEl.checked = data.completed;
-
-  // Apply id and for attributes.
-  // The id will initially be undefined for new todos.
-  todoCheckboxEl.id = `todo-${data.id}`;
-  todoLabel.setAttribute("for", `todo-${data.id}`);
-
-  // If a due date has been set, parsing this it with `new Date` will return a
-  // number. If so, we display a string version of the due date in the todo.
-  const dueDate = new Date(data.date);
-  if (!isNaN(dueDate)) {
-    todoDate.textContent = `Due: ${dueDate.toLocaleString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })}`;
-  }
-
-  todoDeleteBtn.addEventListener("click", () => {
-    todoElement.remove();
-  });
-*/
   return todoElement;
 };
 
 addTodoButton.addEventListener("click", () => {
-  openModal(addTodoPopup);
-});
-
-addTodoCloseBtn.addEventListener("click", () => {
-  closeModal(addTodoPopup);
+  addTodoPopup.open();
 });
 
 addTodoForm.addEventListener("submit", (evt) => {
@@ -79,13 +46,18 @@ addTodoForm.addEventListener("submit", (evt) => {
   const values = { name, date, id };
   const todo = generateTodo(values);
   todosList.append(todo);
-  closeModal(addTodoPopup);
+  addTodoPopup.close();
 });
 
-initialTodos.forEach((item) => {
-  const todo = generateTodo(item);
-  todosList.append(todo);
+const section = new Section({
+  items: initialTodos,
+  renderer: (item) => {
+    const todo = generateTodo(item);
+    section.addItem(todo);
+  },
+  containerSelector: ".todos__list",
 });
+section.renderItems();
 
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
 newTodoValidator.enableValidation();
